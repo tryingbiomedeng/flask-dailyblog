@@ -3,8 +3,6 @@ from werkzeug import exceptions
 from application import app, db
 from application.models import Entry
 
-print(Entry)
-
 @app.route("/")
 def hello_world():
   return jsonify({
@@ -70,7 +68,7 @@ def delete_entry(id):
     db.session.commit()
     return jsonify({"message": "Entry deleted"})
   except:
-        raise exceptions.InternalServerError("An error occurred while deletng the entry.")
+    raise exceptions.InternalServerError("An error occurred while deletng the entry.")
 
 @app.errorhandler(exceptions.InternalServerError)
 def handle_500(err):

@@ -11,3 +11,6 @@ To run the project:
 3. Run ```pipenv shell``` to start the virtual environment
 4. Run ```pipenv install -r requirements.txt```
 5. Run ```pipenv run dev``` to start the application
+
+Current bugs:
+Testing is unable to run due to pytest and python compatibility issues

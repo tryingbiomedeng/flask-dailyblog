@@ -49,15 +49,28 @@ def create_entry():
 
 @app.route("/entries/<int:id>", methods=["PATCH"])
 def update_entry(id):
-  data = request.get_json()
-  entry = Entry.query.get(id)
-
-  if data.get('title'):
-    entry.title = data['title']
-  if data.get('content'):  
-    entry.content = data['content']
-  db.session.commit()
-  return jsonify(entry.json)
+  try:
+    data = request.get_json()
+    entry = Entry.query.get(id)
+    entry.date = data.get('date')
+    entry.title = data.get('title') 
+    entry.content = data.get('content')
+    entry.tag = data.get('tag')
+    entry.author = data.get('author')
+    db.session.commit()
+    return jsonify(entry.json)
+  except:
+    raise exceptions.BadRequest(f"We cannot process your request some required fields are missing or filled out incorrectly")
+  
+@app.route("/entries/<int:id>", methods=["DELETE"])
+def delete_entry(id):
+  try:
+    entry = Entry.query.get(id)
+    db.session.delete(entry)
+    db.session.commit()
+    return jsonify({"message": "Entry deleted"})
+  except:
+        raise exceptions.InternalServerError("An error occurred while deletng the entry.")
 
 @app.errorhandler(exceptions.InternalServerError)
 def handle_500(err):
